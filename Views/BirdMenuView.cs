@@ -8,11 +8,11 @@ namespace BirdLab.Views
         public event EventHandler<BirdDTO> AddBirdClicked;
         public event EventHandler DeleteBirdClicked;
 
-        private readonly Button addBirdButton = new Button { Text = "Add Bird" };
-        private readonly Button deleteBirdButton = new Button { Text = "Delete Bird" };
-        private readonly TextBox nameTextBox = new TextBox { PlaceholderText = "Enter bird name..." };
-        private readonly TextBox infoTextBox = new TextBox { PlaceholderText = "Enter bird description..." };
-        private readonly ComboBox speciesComboBox = new ComboBox();
+        private readonly Button addBirdButton = new() { Text = "Add Bird" };
+        private readonly Button deleteBirdButton = new() { Text = "Delete Bird" };
+        private readonly TextBox nameTextBox = new() { PlaceholderText = "Enter bird name..." };
+        private readonly TextBox infoTextBox = new() { PlaceholderText = "Enter bird description..." };
+        private readonly ComboBox speciesComboBox = new();
 
         public BirdMenuView()
         {

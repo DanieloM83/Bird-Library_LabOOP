@@ -27,15 +27,11 @@ namespace BirdLab.Views
             cardPanel.BackColor = Color.White;
             cardPanel.Padding = new Padding(15);
             cardPanel.Location = new Point(10, 10);
-            cardPanel.Paint += (sender, e) => DrawCardShadow(e.Graphics);
-        }
-
-        private void DrawCardShadow(Graphics graphics)
-        {
-            using (Pen shadowPen = new Pen(Color.LightGray, 3))
-            {
+            cardPanel.Paint += (sender, e) => {
+                Graphics graphics = e.Graphics;
+                using Pen shadowPen = new(Color.LightGray, 3);
                 graphics.DrawRectangle(shadowPen, 0, 0, cardPanel.Width - 1, cardPanel.Height - 1);
-            }
+            };
         }
 
         private void InitializeLabels()
@@ -51,7 +47,7 @@ namespace BirdLab.Views
             speciesLabel.Location = new Point(10, 40);
             infoLabel.Location = new Point(10, 70);
 
-            cardPanel.Controls.AddRange(new Control[] { nameLabel, speciesLabel, infoLabel });
+            cardPanel.Controls.AddRange([nameLabel, speciesLabel, infoLabel]);
             Controls.Add(cardPanel);
         }
 

@@ -2,14 +2,15 @@ using Newtonsoft.Json;
 
 namespace BirdLab.Data
 {
-    public class JsonDataStorage<T> : IDataStorage<T> where T : class
+    public interface IJsonDataStorage<T> : IDataStorage<T> 
     {
-        private readonly string _filePath;
+        string _filePath { get; }
+    }
 
-        public JsonDataStorage(string filePath)
-        {
-            _filePath = filePath;
-        }
+
+    public class JsonDataStorage<T>(string filePath = "birds.json") : IJsonDataStorage<T> where T : class
+    {
+        public string _filePath { get; } = filePath;
 
         public void SaveData(List<T> data)
         {
@@ -31,17 +32,17 @@ namespace BirdLab.Data
             {
                 if (!File.Exists(_filePath))
                 {
-                    return new List<T>();
+                    return [];
                 }
                 var jsonData = File.ReadAllText(_filePath);
                 var data = JsonConvert.DeserializeObject<List<T>>(jsonData);
 
-                return data ?? new List<T>();
+                return data ?? [];
             }
             catch (Exception ex)
             {
                 Console.WriteLine("Error: " + ex.Message);
-                return new List<T>(); 
+                return []; 
             }
         }
     }

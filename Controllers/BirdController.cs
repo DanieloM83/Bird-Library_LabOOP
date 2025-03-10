@@ -11,7 +11,7 @@ namespace BirdLab.Controllers
         private readonly BirdMenuView birdMenuView;
         private readonly BirdService birdService;
 
-        private BirdDTO currentBird;
+        private BirdDTO? currentBird;
 
         public BirdController(BirdListView listView, BirdInfoView infoView, BirdMenuView menuView, BirdService service)
         {

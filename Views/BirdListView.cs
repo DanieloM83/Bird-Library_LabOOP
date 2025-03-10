@@ -24,34 +24,31 @@ namespace BirdLab.Views
             birdListBox.ItemHeight = 40;
             birdListBox.IntegralHeight = false;
             birdListBox.DrawMode = DrawMode.OwnerDrawFixed;
-            birdListBox.DrawItem += BirdListBox_DrawItem;
+            birdListBox.DrawItem += (sender, e) => {
+                if (e.Index < 0) return;
+
+                var listBox = sender as ListBox;
+                var itemText = listBox.Items[e.Index].ToString();
+                bool isSelected = (e.State & DrawItemState.Selected) == DrawItemState.Selected;
+
+                Color backgroundColor = isSelected ? Color.DeepSkyBlue : Color.White;
+                Color textColor = isSelected ? Color.White : Color.Black;
+
+                using (Brush bgBrush = new SolidBrush(backgroundColor), textBrush = new SolidBrush(textColor))
+                {
+                    e.Graphics.FillRectangle(bgBrush, e.Bounds);
+                    e.Graphics.DrawString(itemText, e.Font, textBrush, e.Bounds.X + 10, e.Bounds.Y + 10);
+                }
+
+                using Pen borderPen = new(Color.LightGray, 1);
+                e.Graphics.DrawRectangle(borderPen, e.Bounds.X, e.Bounds.Y, e.Bounds.Width - 1, e.Bounds.Height - 1);
+            };
+            
             birdListBox.SelectedIndexChanged += (s, e) => OnBirdSelected();
 
             Controls.Add(birdListBox);
         }
-
-        private void BirdListBox_DrawItem(object sender, DrawItemEventArgs e)
-        {
-            if (e.Index < 0) return;
-
-            var listBox = sender as ListBox;
-            var itemText = listBox.Items[e.Index].ToString();
-            bool isSelected = (e.State & DrawItemState.Selected) == DrawItemState.Selected;
-
-            Color backgroundColor = isSelected ? Color.DeepSkyBlue : Color.White;
-            Color textColor = isSelected ? Color.White : Color.Black;
-
-            using (Brush bgBrush = new SolidBrush(backgroundColor), textBrush = new SolidBrush(textColor))
-            {
-                e.Graphics.FillRectangle(bgBrush, e.Bounds);
-                e.Graphics.DrawString(itemText, e.Font, textBrush, e.Bounds.X + 10, e.Bounds.Y + 10);
-            }
-
-            using (Pen borderPen = new Pen(Color.LightGray, 1))
-            {
-                e.Graphics.DrawRectangle(borderPen, e.Bounds.X, e.Bounds.Y, e.Bounds.Width - 1, e.Bounds.Height - 1);
-            }
-        }
+        
 
         private void OnBirdSelected()
         {
@@ -64,7 +61,7 @@ namespace BirdLab.Views
         public void UpdateBirdList(List<BirdDTO> birds)
         {
             birdListBox.Items.Clear();
-            birdListBox.Items.AddRange(birds.ToArray());
+            birdListBox.Items.AddRange([.. birds]);
         }
     }
 }
