@@ -1,4 +1,5 @@
 using BirdLab.Models;
+using BirdLab.Themes;
 
 namespace BirdLab.Views
 {
@@ -16,15 +17,15 @@ namespace BirdLab.Views
 
         public BirdMenuView()
         {
-            BackColor = Color.White;
+            BackColor = CatppuccinMochaTheme.Mantle;
             Padding = new Padding(15);
-            Size = new Size(320, 300);
+            Size = new Size(350, 300);
 
             speciesComboBox.DataSource = Enum.GetValues(typeof(Species));
             speciesComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
 
-            StyleButton(addBirdButton, Color.MediumSeaGreen, Color.White);
-            StyleButton(deleteBirdButton, Color.Crimson, Color.White);
+            StyleButton(addBirdButton, CatppuccinMochaTheme.Green);
+            StyleButton(deleteBirdButton, CatppuccinMochaTheme.Red);
 
             var layout = new FlowLayoutPanel
             {
@@ -35,6 +36,22 @@ namespace BirdLab.Views
                 AutoSizeMode = AutoSizeMode.GrowAndShrink
             };
 
+
+            nameTextBox.BackColor = CatppuccinMochaTheme.Base;
+            nameTextBox.ForeColor = CatppuccinMochaTheme.Text;
+            nameTextBox.BorderStyle = BorderStyle.None;
+            nameTextBox.Font = new Font("Consolas", 14, FontStyle.Regular);
+
+            infoTextBox.BackColor = CatppuccinMochaTheme.Base;
+            infoTextBox.ForeColor = CatppuccinMochaTheme.Text;
+            infoTextBox.BorderStyle = BorderStyle;
+            infoTextBox.Font = new Font("Consolas", 14, FontStyle.Regular);
+
+            speciesComboBox.BackColor = CatppuccinMochaTheme.Base;
+            speciesComboBox.ForeColor = CatppuccinMochaTheme.Text;
+            speciesComboBox.FlatStyle = FlatStyle.Flat;
+            speciesComboBox.Font = new Font("Consolas", 14, FontStyle.Regular);
+            
             var controls = new Control[] { nameTextBox, infoTextBox, speciesComboBox, addBirdButton, deleteBirdButton };
             layout.Controls.AddRange(controls);
             Controls.Add(layout);
@@ -71,10 +88,10 @@ namespace BirdLab.Views
             AddBirdClicked?.Invoke(this, newBird);
         }
 
-        private void StyleButton(Button button, Color bgColor, Color textColor)
+        private void StyleButton(Button button, Color bgColor, Color? textColor = null)
         {
             button.BackColor = bgColor;
-            button.ForeColor = textColor;
+            button.ForeColor = textColor ?? CatppuccinMochaTheme.Mantle;
             button.Font = new Font("Segoe UI", 12, FontStyle.Bold);
             button.FlatStyle = FlatStyle.Flat;
             button.FlatAppearance.BorderSize = 0;

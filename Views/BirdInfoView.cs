@@ -1,4 +1,5 @@
 using BirdLab.Models;
+using BirdLab.Themes;
 
 namespace BirdLab.Views
 {
@@ -12,37 +13,19 @@ namespace BirdLab.Views
 
         public BirdInfoView()
         {
-            BackColor = Color.White;
-            Padding = new Padding(15);
-            Size = new Size(300, 200);
+            Dock = DockStyle.Fill;
+            BackColor = CatppuccinMochaTheme.Mantle;
+            Size = new Size(350, 249);
+            Padding = new Padding(1);
 
-            InitializeCardPanel();
-            InitializeLabels();
-            ArrangeControls();
-        }
-
-        private void InitializeCardPanel()
-        {
-            cardPanel.Size = new Size(280, 160);
-            cardPanel.BackColor = Color.White;
-            cardPanel.Padding = new Padding(15);
-            cardPanel.Location = new Point(10, 10);
-            cardPanel.Paint += (sender, e) => {
-                Graphics graphics = e.Graphics;
-                using Pen shadowPen = new(Color.LightGray, 3);
-                graphics.DrawRectangle(shadowPen, 0, 0, cardPanel.Width - 1, cardPanel.Height - 1);
-            };
-        }
-
-        private void InitializeLabels()
-        {
-            SetupLabel(nameLabel, FontStyle.Bold, 14, Color.DarkSlateBlue);
-            SetupLabel(speciesLabel, FontStyle.Italic, 12, Color.DarkGreen);
-            SetupLabel(infoLabel, FontStyle.Regular, 12, Color.Black);
-        }
-
-        private void ArrangeControls()
-        {
+            SetupLabel(nameLabel, FontStyle.Bold, 14);
+            SetupLabel(speciesLabel, FontStyle.Italic, 12, CatppuccinMochaTheme.Subtext0);
+            SetupLabel(infoLabel, FontStyle.Regular, 12, CatppuccinMochaTheme.Subtext1);
+            
+            cardPanel.Dock = DockStyle.Fill;
+            cardPanel.BackColor = CatppuccinMochaTheme.Base;
+            cardPanel.Padding = new Padding(5);
+            
             nameLabel.Location = new Point(10, 10);
             speciesLabel.Location = new Point(10, 40);
             infoLabel.Location = new Point(10, 70);
@@ -51,10 +34,10 @@ namespace BirdLab.Views
             Controls.Add(cardPanel);
         }
 
-        private void SetupLabel(Label label, FontStyle style, int fontSize, Color color)
+        private void SetupLabel(Label label, FontStyle style, int fontSize, Color? color = null)
         {
             label.Font = new Font("Segoe UI", fontSize, style);
-            label.ForeColor = color;
+            label.ForeColor = color ?? CatppuccinMochaTheme.Text;
             label.AutoSize = true;
         }
 

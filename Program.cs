@@ -4,11 +4,14 @@ using BirdLab.Models;
 using BirdLab.Services;
 using BirdLab.Controllers;
 using BirdLab.Repositories;
+using BirdLab.Themes;
 
 namespace BirdLab
 {
     static class Program
     {
+        const int Width_ = 800, Height_ = 600;
+
         [STAThread]
         static void Main()
         {
@@ -41,8 +44,9 @@ namespace BirdLab
             var mainForm = new Form
             {
                 Text = "Bird Catalog",
-                Size = new Size(800, 600)
+                Size = new Size(Width_, Height_)
             };
+            mainForm.BackColor = CatppuccinMochaTheme.Crust;
 
             var layout = new SplitContainer
             {

@@ -1,4 +1,5 @@
 using BirdLab.Models;
+using BirdLab.Themes;
 
 namespace BirdLab.Views
 {
@@ -7,44 +8,54 @@ namespace BirdLab.Views
     {
         public event EventHandler<BirdDTO> BirdSelected;
 
-        private readonly ListBox birdListBox = new ListBox();
+        private readonly ListBox birdListBox = new();
 
         public BirdListView()
         {
-            BackColor = Color.White;
-            Padding = new Padding(15);
-            Size = new Size(300, 400);
+            Dock = DockStyle.Fill;
+            BackColor = CatppuccinMochaTheme.Crust;
+            Padding = new Padding(5);
             BorderStyle = BorderStyle.FixedSingle;
-
+            
             birdListBox.Dock = DockStyle.Fill;
-            birdListBox.Font = new Font("Segoe UI", 12);
-            birdListBox.ForeColor = Color.Black;
-            birdListBox.BackColor = Color.White;
+            birdListBox.BackColor = CatppuccinMochaTheme.Mantle;
+            birdListBox.ForeColor = CatppuccinMochaTheme.Text;
+            birdListBox.Font = new Font("Inter", 14);
             birdListBox.BorderStyle = BorderStyle.None;
             birdListBox.ItemHeight = 40;
             birdListBox.IntegralHeight = false;
             birdListBox.DrawMode = DrawMode.OwnerDrawFixed;
+
+            int hoverIndex = 0;
             birdListBox.DrawItem += (sender, e) => {
                 if (e.Index < 0) return;
 
                 var listBox = sender as ListBox;
-                var itemText = listBox.Items[e.Index].ToString();
+                var itemText = listBox?.Items[e.Index].ToString();
                 bool isSelected = (e.State & DrawItemState.Selected) == DrawItemState.Selected;
+                bool isHovered = e.Index == hoverIndex;
 
-                Color backgroundColor = isSelected ? Color.DeepSkyBlue : Color.White;
-                Color textColor = isSelected ? Color.White : Color.Black;
+                Color backgroundColor = isHovered ? CatppuccinMochaTheme.Surface0 : CatppuccinMochaTheme.Mantle;
+                backgroundColor = isSelected ? CatppuccinMochaTheme.Surface2 : backgroundColor;
+                Color textColor = CatppuccinMochaTheme.Text;
 
                 using (Brush bgBrush = new SolidBrush(backgroundColor), textBrush = new SolidBrush(textColor))
                 {
                     e.Graphics.FillRectangle(bgBrush, e.Bounds);
                     e.Graphics.DrawString(itemText, e.Font, textBrush, e.Bounds.X + 10, e.Bounds.Y + 10);
                 }
-
-                using Pen borderPen = new(Color.LightGray, 1);
-                e.Graphics.DrawRectangle(borderPen, e.Bounds.X, e.Bounds.Y, e.Bounds.Width - 1, e.Bounds.Height - 1);
+                
             };
             
             birdListBox.SelectedIndexChanged += (s, e) => OnBirdSelected();
+            birdListBox.MouseMove += (s, e) => {
+                int index = birdListBox.IndexFromPoint(e.Location);
+                if (index != hoverIndex)
+                { 
+                    hoverIndex = index;
+                    birdListBox.Invalidate();
+                }
+            };
 
             Controls.Add(birdListBox);
         }
