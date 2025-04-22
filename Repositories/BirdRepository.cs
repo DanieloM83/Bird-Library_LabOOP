@@ -45,7 +45,7 @@ namespace BirdLab.Repositories
             return false;
         }
 
-        public override BirdDTO GetById(int id)
+        public override BirdDTO? GetById(int id)
         {
             return _birds.FirstOrDefault(b => b.Id == id);
         }
