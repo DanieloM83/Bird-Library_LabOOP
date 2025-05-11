@@ -3,12 +3,12 @@ using BirdLab.Themes;
 
 namespace BirdLab.Views
 {
-
     public class BirdListView : UserControl
     {
-        public event EventHandler<BirdDTO> BirdSelected;
+        public event EventHandler<Bird> BirdSelected;
 
         private readonly ListBox birdListBox = new();
+        private List<Bird> birds = new();
 
         public BirdListView()
         {
@@ -44,7 +44,6 @@ namespace BirdLab.Views
                     e.Graphics.FillRectangle(bgBrush, e.Bounds);
                     e.Graphics.DrawString(itemText, e.Font, textBrush, e.Bounds.X + 10, e.Bounds.Y + 10);
                 }
-                
             };
             
             birdListBox.SelectedIndexChanged += (s, e) => OnBirdSelected();
@@ -59,20 +58,21 @@ namespace BirdLab.Views
 
             Controls.Add(birdListBox);
         }
-        
 
         private void OnBirdSelected()
         {
-            if (birdListBox.SelectedItem is BirdDTO selectedBird)
+            if (birdListBox.SelectedIndex >= 0 && birdListBox.SelectedIndex < birds.Count)
             {
+                var selectedBird = birds[birdListBox.SelectedIndex];
                 BirdSelected?.Invoke(this, selectedBird);
             }
         }
 
-        public void UpdateBirdList(List<BirdDTO> birds)
+        public void UpdateBirdList(List<Bird> newBirds)
         {
+            birds = newBirds;
             birdListBox.Items.Clear();
-            birdListBox.Items.AddRange([.. birds]);
+            birdListBox.Items.AddRange(birds.Select(b => b.Name).ToArray());
         }
     }
 }

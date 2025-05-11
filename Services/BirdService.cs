@@ -3,20 +3,24 @@ using BirdLab.Repositories;
 
 namespace BirdLab.Services
 {
-    public delegate bool BirdFilter(BirdDTO bird);
-    public delegate TKey BirdComparator<TKey>(BirdDTO bird);
+    public delegate bool BirdFilter(Bird bird);
+    public delegate TKey BirdComparator<TKey>(Bird bird);
 
-
-    public class BirdService(BirdRepository repository)
+    public class BirdService
     {
-        private readonly BirdRepository birdRepository = repository;
+        private readonly AbstractRepository<Bird> birdRepository;
 
-        public List<BirdDTO> GetAllBirds()
+        public BirdService(AbstractRepository<Bird> repository)
+        {
+            birdRepository = repository;
+        }
+
+        public List<Bird> GetAllBirds()
         {
             return [.. birdRepository.GetAll()];
         }
 
-        public void AddBird(BirdDTO bird)
+        public void AddBird(Bird bird)
         {
             birdRepository.Add(bird);
         }
@@ -26,39 +30,41 @@ namespace BirdLab.Services
             return birdRepository.Delete(id);
         }
 
-        public List<BirdDTO> GetSortedBirds<TKey>(BirdComparator<TKey> sortBy)
+        public List<Bird> GetSortedBirds<TKey>(BirdComparator<TKey> sortBy)
         {
             return [.. birdRepository.GetAll().OrderBy((b) => sortBy(b))];
         }
 
-        public List<BirdDTO> GetBirdsByDelegate(BirdFilter filter)
+        public List<Bird> GetBirdsByDelegate(BirdFilter filter)
         {
             var birds = birdRepository.GetAll();
             return [.. birds.Where((b) => filter(b))];
         }
 
-        public List<BirdDTO> SearchByName(string name)
+        public List<Bird> SearchByName(string name)
         {
             return [.. birdRepository.GetAll().Where(b => b.Name.ToLower().Contains(name.ToLower()))];
         }
 
-        public List<BirdDTO> FilterBySpecies(Species species)
+        public List<Bird> FilterBySpecies(Species species)
         {
             return [.. birdRepository.GetAll().Where(b => b.Species == species)];
         }
 
-        public List<BirdDTO> SortByNameDescendingThenSpecies()
+        public List<Bird> SortByNameDescendingThenSpecies()
         {
             return [.. birdRepository.GetAll()
                 .OrderByDescending(b => b.Name)
                 .ThenBy(b => b.Species)];
         }
 
-        public List<(string Name, Species Species)> GetBasicInfo() {
-            return [.. birdRepository.GetAll().Select<BirdDTO, (string Name, Species Species)>(b => new (b.Name, b.Species))];
+        public List<(string Name, Species Species)> GetBasicInfo()
+        {
+            return [.. birdRepository.GetAll().Select<Bird, (string Name, Species Species)>(b => new(b.Name, b.Species))];
         }
 
-        public List<BirdDTO> GetPagedBirds(int pageNumber = 1, int pageSize = 10) {
+        public List<Bird> GetPagedBirds(int pageNumber = 1, int pageSize = 10)
+        {
             return [.. birdRepository.GetAll().Skip((pageNumber - 1) * pageSize).Take(pageSize)];
         }
 
@@ -77,12 +83,12 @@ namespace BirdLab.Services
             return maxSpeciesGroup?.Species;
         }
 
-        public static List<BirdDTO> GetBirdsIntersection(List<BirdDTO> birds1, List<BirdDTO> birds2)
+        public static List<Bird> GetBirdsIntersection(List<Bird> birds1, List<Bird> birds2)
         {
             return [.. birds1.IntersectBy(birds2.Select(b => b.Id), b => b.Id)];
         }
 
-        public static List<BirdDTO> GetBirdsSetMinus(List<BirdDTO> birds1, List<BirdDTO> birds2)
+        public static List<Bird> GetBirdsSetMinus(List<Bird> birds1, List<Bird> birds2)
         {
             return [.. birds1.ExceptBy(birds2.Select(b => b.Id), b => b.Id)];
         }

@@ -11,7 +11,7 @@ namespace BirdLab.Controllers
         private readonly BirdMenuView birdMenuView;
         private readonly BirdService birdService;
 
-        private BirdDTO? currentBird;
+        private Bird? currentBird;
 
         public BirdController(BirdListView listView, BirdInfoView infoView, BirdMenuView menuView, BirdService service)
         {
@@ -36,13 +36,13 @@ namespace BirdLab.Controllers
             birdListView.UpdateBirdList(birdService.GetAllBirds());
         }
 
-        private void OnBirdSelected(object sender, BirdDTO bird)
+        private void OnBirdSelected(object sender, Bird bird)
         {
             currentBird = bird;
             birdInfoView.UpdateBirdInfo(bird);
         }
 
-        private void OnAddBirdClicked(object sender, BirdDTO newBird)
+        private void OnAddBirdClicked(object sender, Bird newBird)
         {
             birdService.AddBird(newBird);
             UpdateBirdListView();
@@ -54,7 +54,7 @@ namespace BirdLab.Controllers
             {
                 birdService.DeleteBird(currentBird.Id);
                 UpdateBirdListView();
-                birdInfoView.UpdateBirdInfo(new BirdDTO { Id = -1, Name = "None", Species = Species.Penguin, Info = "None" });
+                birdInfoView.UpdateBirdInfo(new Bird { Name = "None", Species = Species.Penguin, Info = "None" });
             }
         }
 

@@ -41,7 +41,7 @@ namespace BirdLab.Views
             label.AutoSize = true;
         }
 
-        public void UpdateBirdInfo(BirdDTO bird)
+        public void UpdateBirdInfo(Bird bird)
         {
             cardPanel.Visible = false;
             nameLabel.Text = $"Name: {bird.Name}";

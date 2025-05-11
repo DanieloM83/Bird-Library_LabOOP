@@ -3,10 +3,9 @@ using BirdLab.Themes;
 
 namespace BirdLab.Views
 {
-
     public class BirdMenuView : UserControl
     {
-        public event EventHandler<BirdDTO> AddBirdClicked;
+        public event EventHandler<Bird> AddBirdClicked;
         public event EventHandler DeleteBirdClicked;
 
         private readonly Button addBirdButton = new() { Text = "Add Bird" };
@@ -36,7 +35,6 @@ namespace BirdLab.Views
                 AutoSizeMode = AutoSizeMode.GrowAndShrink
             };
 
-
             nameTextBox.BackColor = CatppuccinMochaTheme.Base;
             nameTextBox.ForeColor = CatppuccinMochaTheme.Text;
             nameTextBox.BorderStyle = BorderStyle.None;
@@ -44,7 +42,7 @@ namespace BirdLab.Views
 
             infoTextBox.BackColor = CatppuccinMochaTheme.Base;
             infoTextBox.ForeColor = CatppuccinMochaTheme.Text;
-            infoTextBox.BorderStyle = BorderStyle;
+            infoTextBox.BorderStyle = BorderStyle.None;
             infoTextBox.Font = new Font("Consolas", 14, FontStyle.Regular);
 
             speciesComboBox.BackColor = CatppuccinMochaTheme.Base;
@@ -77,9 +75,8 @@ namespace BirdLab.Views
                 return;
             }
 
-            var newBird = new BirdDTO
+            var newBird = new Bird
             {
-                Id = new Random().Next(1, 1000),
                 Name = name,
                 Species = species,
                 Info = info
