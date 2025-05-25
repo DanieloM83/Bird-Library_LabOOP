@@ -7,7 +7,8 @@ namespace BirdLab.Models {
         Owl,
         Parrot,
         Crow,
-        Penguin
+        Penguin,
+        Passerine
     }
 
     public record BirdDTO

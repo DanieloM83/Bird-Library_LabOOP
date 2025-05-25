@@ -48,12 +48,17 @@ namespace BirdLab
                 var optionsBuilder = new DbContextOptionsBuilder<BirdDbContext>();
                 var connectionString = "Server=localhost;Port=3306;Database=birdlabdb;User=root;Password=mysql;";
                 optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
-
                 var context = new BirdDbContext(optionsBuilder.Options);
+                
                 Console.WriteLine("Testing database connection...");
+                
+                // Delete and recreate database (for development only)
+                Console.WriteLine("Recreating database...");
+                context.Database.EnsureDeleted();
                 context.Database.EnsureCreated();
-                Console.WriteLine("Database connection successful");
-
+                
+                Console.WriteLine("Database created successfully");
+                
                 var birdRepository = new EfBirdRepository(context);
                 return new BirdService(birdRepository);
             }
