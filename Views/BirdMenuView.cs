@@ -93,8 +93,8 @@ namespace BirdLab.Views
             // Set consistent widths
             var controlWidth = 280;
             nameTextBox.Width = infoTextBox.Width = descriptionTextBox.Width = dietTextBox.Width = 
-            speciesComboBox.Width = lengthNumeric.Width = weightNumeric.Width = 
-            addBirdButton.Width = deleteBirdButton.Width = controlWidth;
+            speciesComboBox.Width = lengthNumeric.Width = weightNumeric.Width = controlWidth;
+            addBirdButton.Width = deleteBirdButton.Width = controlWidth / 3;
 
             addBirdButton.Click += (s, e) => OnAddBirdClicked();
             deleteBirdButton.Click += (s, e) => DeleteBirdClicked?.Invoke(this, EventArgs.Empty);

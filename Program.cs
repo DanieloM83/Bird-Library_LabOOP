@@ -100,25 +100,34 @@ namespace BirdLab
                 var layout = new SplitContainer
                 {
                     Dock = DockStyle.Fill,
-                    Orientation = Orientation.Vertical
+                    Orientation = Orientation.Vertical,
+                    // SplitterDistance = 400 // Set initial splitter position
                 };
 
                 layout.Panel1.Controls.Add(birdListView);
 
-                var panel2 = new Panel { Dock = DockStyle.Fill };
-                var flowLayoutPanel = new FlowLayoutPanel
+                // Fix the right panel layout
+                var rightPanel = new TableLayoutPanel
                 {
                     Dock = DockStyle.Fill,
-                    FlowDirection = FlowDirection.TopDown,
-                    AutoSize = true
+                    RowCount = 2,
+                    ColumnCount = 1
                 };
-
-                flowLayoutPanel.Controls.Add(birdInfoView);
-                flowLayoutPanel.Controls.Add(birdMenuView);
-
-                panel2.Controls.Add(flowLayoutPanel);
-                layout.Panel2.Controls.Add(panel2);
-
+                
+                // Set row styles - BirdInfoView gets 60%, BirdMenuView gets 40%
+                rightPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 30F));
+                rightPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 70F));
+                
+                // Remove Dock.Fill from BirdInfoView and set explicit size
+                birdInfoView.Dock = DockStyle.Fill;
+                birdInfoView.Size = new Size(350, 300); // Adjust as needed
+                
+                birdMenuView.Dock = DockStyle.Fill;
+                
+                rightPanel.Controls.Add(birdInfoView, 0, 0);
+                rightPanel.Controls.Add(birdMenuView, 0, 1);
+                
+                layout.Panel2.Controls.Add(rightPanel);
                 mainForm.Controls.Add(layout);
 
                 return mainForm;
